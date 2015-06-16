@@ -1,0 +1,5 @@
+{% if is_subscribe %}
+    <a class="deletelink" href="{% url 'blog_unsubsc' master.id %}">unsubscribe</a>
+{% else %}
+    <a class="addlink" href="{% url 'blog_subsc' master.id %}">subscribe</a>
+{% endif %}

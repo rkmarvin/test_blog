@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load subsription %}
+
+{% block content %}
+    <ul>
+        {% for bloger in object_list %}
+            <li>
+                {{ bloger.username }}
+                {% check_subscribe bloger %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

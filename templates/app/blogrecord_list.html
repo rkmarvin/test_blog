@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Blog</h1>
+<a href="{% url 'blog_add' %}">Add New Post</a>
+    {% include "app/blog.html" %}
+{% endblock %}

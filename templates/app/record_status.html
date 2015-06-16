@@ -1,0 +1,7 @@
+{% if record.user != request.user %}
+    {% if is_readed %}
+        readed
+    {% else %}
+        <a href="{% url 'blog_set_readed' record.id %}">Readed</a>
+    {% endif %}
+{% endif %}
