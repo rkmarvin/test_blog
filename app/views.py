@@ -70,7 +70,7 @@ class NewsListView(ListView):
     template_name = "app/news_list.html"
 
     def get_queryset(self):
-        masters = Subscription.get_masters(self.request.user)
+        masters = Subscription.subsrc_objs.masters(self.request.user)
         return BlogRecord.objects.filter(user__in=masters).order_by('-created')
 
 

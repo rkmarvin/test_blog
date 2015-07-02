@@ -2,7 +2,7 @@
 
 <ul>
     {% for record in object_list %}
-        <a href="{% url 'blog' %}{{ record.id }}/"><h2>{{ record.created }} - {{ record.title }}</h2></a>
+        <a href="{% url 'blog_detail' pk=record.id %}"><h2>{{ record.created }} - {{ record.title }}</h2></a>
         writen by <strong>{{ record.user.username }}</strong>
         {% record_status record %}
         <p>{{ record.text }}

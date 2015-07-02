@@ -5,23 +5,27 @@ from django.db import models
 from test_blog.settings import CURRENT_DOMAIN
 
 
-class Subscription(models.Model):
-    follower = models.ForeignKey(User, related_name="follower_user")
-    masters = models.ManyToManyField(User, related_name="master_user")
+class SubscriptionManager(models.Manager):
 
-    @classmethod
-    def get_masters(cls, follower):
-        subscr = cls.objects.filter(follower=follower).first()
+    def followers(self, master):
+        return self.get_queryset().filter(masters=master)
+
+    def masters(self, follower):
+        subscr = self.get_queryset().filter(follower=follower).first()
         if subscr:
             return subscr.masters.all()
         return []
 
+
+class Subscription(models.Model):
+    follower = models.ForeignKey(User, related_name="follower_user")
+    masters = models.ManyToManyField(User, related_name="master_user")
+
+    objects = models.Manager()
+    subsrc_objs = SubscriptionManager()
+
     def is_master(self, master):
         return master in self.masters.all()
-
-    @classmethod
-    def get_followers(cls, master):
-        return Subscription.objects.filter(masters=master)
 
 
 class BlogRecord(models.Model):
@@ -37,7 +41,7 @@ class BlogRecord(models.Model):
             self.send_email()
 
     def send_email(self):
-        recipients = [s.follower.email for s in Subscription.get_followers(self.user)]
+        recipients = [s.follower.email for s in Subscription.subsrc_objs.followers(self.user)]
         if recipients:
             send_mail(
                 u'%s add new post' % self.user,
